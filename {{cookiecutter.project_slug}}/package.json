@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Node.js packages for the {{cookiecutter.project_slug}} website",
   "main": "index.js",
-  "author": "Marcel Hekking",
+  "author": "{{cookiecutter.author_first_name}} {{cookiecutter.author_last_name}}",
   "license": "MIT",
   "dependencies": {
     "jquery": "^3.5.1",

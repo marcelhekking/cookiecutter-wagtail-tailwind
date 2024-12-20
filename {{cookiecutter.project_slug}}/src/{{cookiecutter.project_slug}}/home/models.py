@@ -4,7 +4,7 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import StreamField
 from wagtail.models import Orderable, Page
 
-from py10 import blocks
+from {{cookiecutter.project_slug}} import blocks
 
 
 class HomePageCarouselImages(Orderable):

@@ -1,8 +1,8 @@
 [project]
 name = "{{cookiecutter.project_slug}}"
-description = "{{cookiecutter.project_slug}} Website"
+description = "{{cookiecutter.project_name}} Website"
 version = "0.1.0"
-authors = [{ name = "Marcel Hekking", email = "marcelhekking@gmail.com" }]
+authors = [{ name = "{{cookiecutter.author_first_name}} {{cookiecutter.author_last_name}}", email = "{{cookiecutter.author_email.lower()}}" }]
 dependencies = [
     "wagtail==5.2.3",
     "psycopg2-binary==2.9.7",

@@ -2,7 +2,7 @@ from wagtail.blocks import CharBlock, RichTextBlock, StreamBlock, StructBlock
 
 
 class SectionBlock(StructBlock):
-    sectie_titel =          CharBlock()
+    sectie_titel = CharBlock()
     kolom_links = RichTextBlock()
     kolom_rechts = RichTextBlock()
 
