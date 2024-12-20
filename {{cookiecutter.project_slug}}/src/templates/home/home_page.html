@@ -1,0 +1,128 @@
+{% extends 'main.html' %}
+{% load static i18n wagtailcore_tags wagtailimages_tags %}
+
+
+{% block main_content %}
+
+<!-- Section-->
+  {% block content %}
+    {% for block in page.inhoud %}
+        <!-- Section Heading-->
+        {% if forloop.counter|divisibleby:2 %}
+          <section class="page-section  bg-primary text-white mb-0" id="{{ block.value.sectie_titel|slugify }}">
+            <div class="container">
+            <h2 class="page-section-heading text-center text-uppercase mb-0">{{ block.value.sectie_titel }}</h2>
+            <!-- Icon Divider-->
+            <div class="divider-custom divider-light">
+              <div class="divider-custom-line"></div>
+              <div class="divider-custom-icon"><i class="fas fa-paw"></i></div>
+              <div class="divider-custom-line"></div>
+            </div>
+        {% else %}
+          <section class="page-section" id="{{ block.value.sectie_titel|slugify }}">
+            <div class="container">
+              <h2 class="page-section-heading text-center text-uppercase text-secondary">{{ block.value.sectie_titel }}</h2>
+              <!-- Icon Divider-->
+              <div class="divider-custom divider">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon"><i class="fas fa-paw"></i></div>
+                <div class="divider-custom-line"></div>
+              </div>
+        {% endif %}
+              {% if block.block_type == "honden_sectie" %}
+                <div class="row portfolio">
+                  {% for hond in honden %}
+                    <div class="col-md-6 col-lg-4 mb-5">
+                      <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal{{ hond.id }}">
+                        <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                          <div class="portfolio-item-caption-content text-center text-white">{{ hond.naam }}</div>
+                        </div>
+                        <div class="img-fluid">
+                          {% image hond.hond_hero_afbeelding fill-200x125 as img %}
+                          {% if forloop.parentloop.counter|divisibleby:2 %}
+                            <img src="{{ img.url }}" class="img-thumbnail-white-border d-block w-100" alt="{{ img.alt }}">
+                          {% else %}
+                            <img src="{{ img.url }}" class="img-thumbnail-green-border d-block w-100" alt="{{ img.alt }}">
+                          {% endif %}
+                          </div>
+                      </div>
+                    </div>
+                  {% empty %}
+                  <div class="row">
+                    <div class="col-lg-6 ml-auto text-center">
+                      Je hebt nog geen hondjes in je pack. Voeg er een paar toe via je CMS
+                   </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              {% elif block.block_type == "sectie" %}
+                <div class="flex justify-center">
+                    <p class="mb-3 text-gray-500 dark:text-gray-400">
+                      {{ block.value.kolom_links|richtext }}
+                    </p>
+                    <p class="mb-3 text-gray-500 dark:text-gray-400">
+                      {{ block.value.kolom_rechts|richtext }}
+                  </p>
+                </div>
+              {% elif block.block_type == "contact_sectie" %}
+              <div class="row">
+                <div class="col-lg-4 ml-auto">
+                  <p>
+                    {{ block.value.contact_info|richtext }}
+                  </p>
+                </div>
+                <div class="col-lg-4 mr-auto">
+                  <p>
+                    <a href="{% url 'contact' %}">Contact formulier</a>
+                  </p>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+         </section>
+    {% endfor %}
+  {% endblock %}
+
+  <!-- Portfolio Modals-->
+  {% for hond in honden %}
+  <div class="portfolio-modal modal fade" id="portfolioModal{{ hond.id}}" tabindex="-1" role="dialog"
+    aria-labelledby="portfolioModal{{ hond.id }}Label" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="fas fa-times"></i></span>
+        </button>
+        <div class="modal-body text-center">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-8">
+                <!-- Portfolio Modal - Title-->
+                <h2 class="portfolio-modal-title text-secondary text-uppercase mb-0"
+                  id="portfolioModal{{ hond.id }}Label">{{ hond.naam }}</h2>
+                <!-- Icon Divider-->
+                <div class="divider-custom">
+                  <div class="divider-custom-line"></div>
+                  <div class="divider-custom-icon"><i class="fas fa-paw"></i></div>
+                  <div class="divider-custom-line"></div>
+                </div>
+                <!-- Portfolio Modal - Image-->
+                <div class="img-fluid rounded mb-5">
+                  {% image hond.hond_hero_afbeelding fill-400x300 as img %}
+                  <img src="{{ img.url }}" class="d-block w-100" alt="{{ img.alt }}">
+                </div>
+                <!-- Portfolio Modal - Text-->
+                <p class="mb-5">{{ hond.info }}</p>
+                <button class="btn btn-primary" data-dismiss="modal">
+                  <i class="fas fa-times fa-fw"></i>
+                  Sluiten
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{
+  "project_name": "Your project name",
+  "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '-')|replace('.', '-')|trim() }}",
+  "description": "A Django Wagtail project hosted on DigitalOcean, with CI/CD pipelines and Docker",
+  "author_name": "Your name",
+  "admin_first_name": "First name admin account",
+  "admin_email_address": "Email address admin account",
+  "_copy_without_render": ["src/static", "src/templates", ".github/workflows/ci-cd.yaml"]
+
+}
