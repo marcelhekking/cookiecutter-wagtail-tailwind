@@ -81,13 +81,3 @@ Start watchify to create a minified bundle 'on-the-fly':
 cd ~/../{{cookiecutter.project_slug}}$
 yarn run watchify
 ```
-
-## Dependencies
-
-## Pinging Google
-
-Log in to the web container via Portainer and then execute:
-
-```bash
-python manage.py ping_google sitemap.xml
-```
