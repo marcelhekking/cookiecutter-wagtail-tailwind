@@ -1,81 +1,81 @@
 # {{cookiecutter.project_name}}
 
-## Installeren
+## Installation
 
-### Lokaal installeren en ontwikkelen
+### Local installation and development
 
-Clone de Git repo in een lokale folder:
+Clone the Git repo into a local folder:
 
 ```bash
 git clone git@gitlab.com:marcelhekking/{{cookiecutter.project_slug}}.git
 ```
 
-Met docker kan er een container gestart worden voor ontwikkeling. Zorg er voor dat docker en docker-compose geïnstalleerd zijn (<https://docs.docker.com/compose/install/>)
+With Docker, you can start a container for development. Make sure Docker and Docker Compose are installed (<https://docs.docker.com/compose/install/>).
 
-Ga naar the root van het project (`{{cookiecutter.project_slug}}`) en 'build' de dev container met:
+Go to the root of the project (`{{cookiecutter.project_slug}}`) and build the dev container with:
 
 ```bash
 docker compose -f docker-compose.yml build
 ```
 
-Start daarna de container op met:
+Then start the container with:
 
 ```bash
-docker compose -f docker-compose.yml  up
+docker compose -f docker-compose.yml up
 ```
 
-### Group wijzigen van public static en media folders
+### Changing the group of public static and media folders
 
-Web docker doet acties under GI 1024 (bijvoorbeeld `collectstatic` draaien). In de Docker files wordt er een fysiek volume op de host gekoppeld met folders binne docker. Om geen permissie error te krijgen:
+The web Docker performs actions under GI 1024 (e.g., running `collectstatic`). In the Docker files, a physical volume on the host is linked with folders inside Docker. To avoid permission errors:
 
-- maak public folder aan op project niveau (dus naast `src`)
-- maake `staticfiles` en `mediafiles` folder aan en voor voor beide folders het volgende uit:
+- Create a public folder at the project level (next to `src`)
+- Create `staticfiles` and `mediafiles` folders and run the following for both folders:
 
 ```bash
 mkdir -p public/staticfiles && mkdir -p public/mediafiles
 ```
 
-en voer het volgende make commando uit:
+and execute the following make command (<https://www.gnu.org/software/make/>):
 
 ```bash
 make 1024
 ```
 
-### Pre-commit installereren
+### Installing Pre-commit
 
-Pre-commit is een Python package om via git hooks code te checken alvorens het in een Git repo terecht komt. Voordat je een commit doet moet je pre-commit installeren. In de juiste Python virtuele omgeving, ga naar the root van het project (`{{cookiecutter.project_slug}}`) en voer uit:
+Pre-commit is a Python package to check code via git hooks before it ends up in a Git repo. Before committing, you need to install pre-commit. In the correct Python virtual environment, go to the root of the project (`{{cookiecutter.project_slug}}`) and run:
 
 ```bash
 pre-commit install
 ```
 
-Om te testen kun je bestaande bestanden checken met pre-commit:
+To test, you can check existing files with pre-commit:
 
 ```bash
 pre-commit run --all-files
 ```
 
-## Een minified bundel maken van JS en CSS bestanden
+## Creating a minified bundle of JS and CSS files
 
-Voor het aanpassen en effectief maken van CSS en JS files wordt er gebruikt gemaakt van `watchify`. Veranderingen aan CSS en JS worden waargenomen en omgezet naar een minified bundle. Deze minified bundle wordt uitgerold naar productie.
+For modifying and effectively creating CSS and JS files, `watchify` is used. Changes to CSS and JS are observed and converted into a minified bundle. This minified bundle is deployed to production.
 
-### Voorwaarden
+### Requirements
 
-De volgende Node.js applicaties moeten worden geïnstalleerd:
+The following Node.js applications must be installed:
 
 - browserify
 - watchify
 - uglify-js
 - browserify-css
 
-Alle dependencies zijn te installeren met het `yarn install` commando in de root van het project:
+All dependencies can be installed with the `yarn install` command in the root of the project:
 
 ```bash
 cd ~/../{{cookiecutter.project_slug}}$
 yarn install
 ```
 
-Start watchify om 'on-the-fly' een minified bundle te maken maken:
+Start watchify to create a minified bundle 'on-the-fly':
 
 ```bash
 cd ~/../{{cookiecutter.project_slug}}$
@@ -84,14 +84,10 @@ yarn run watchify
 
 ## Dependencies
 
+## Pinging Google
 
+Log in to the web container via Portainer and then execute:
 
-## Google pingen
-
-Log in of de web container via Portainers en voer dan uit:
-
-```Bash
+```bash
 python manage.py ping_google sitemap.xml
 ```
-
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
