@@ -8,18 +8,10 @@ from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
-from {{cookiecutter.project_slug}}.contact import views
-
 urlpatterns = [
-    # path("contact", views.ContactFormView.as_view(), name="contact"),
-    # path("ingediend", views.SubmittedView.as_view(), name="submitted"),
-    path("login/", auth_views.LoginView.as_view(), name="auth_login"),
-    path("contact/", views.ContactFormView.as_view(), name="contact"),
-    path("ingediend", views.SubmittedView.as_view(), name="submitted"),
     path("admin/", admin.site.urls),
     path("cms/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
-    # path("search/", search_views.search, name="search"),
 ]
 
 
