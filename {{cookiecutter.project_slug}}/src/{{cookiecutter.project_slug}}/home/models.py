@@ -1,10 +1,7 @@
 from django.db import models
-from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
-from wagtail.fields import StreamField
-from wagtail.models import Orderable, Page
+from wagtail.admin.panels import FieldPanel
 
-from hoepla import blocks
+from wagtail.models import Page
 
 
 class HomePage(Page):
