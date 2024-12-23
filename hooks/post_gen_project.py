@@ -1,5 +1,20 @@
 import os
 
+file_content = """SQL_DATABASE={{cookiecutter.project_slug}}_local_production
+SQL_USER=postgres
+SQL_PASSWORD=a_secret_password
+SQL_HOST=db
+SQL_PORT=5432
+
+POSTGRES_DB={{cookiecutter.project_slug}}_local_production
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=a_secret_password
+
+WEB_IMAGE={{cookiecutter.project_slug}}-web:latest
+MEDIAFILES_HOST=current_working_dir/public/mediafiles/
+STATICFILES_HOST=current_working_dir/public/staticfiles/
+"""
+
 # Define the path to the file where the original working directory is stored
 original_working_directory_file = "original_working_directory.txt"
 
@@ -10,22 +25,12 @@ with open(original_working_directory_file, "r") as file:
 # Print the original working directory to verify
 print(f"Original working directory: {original_working_directory}")
 
-# Define the path to the template file where you want to insert the original working directory
+# Define the path to the template file to be created
 template_file_path = original_working_directory + "/.env_var"
 
-# Check if the file exists
-if os.path.exists(template_file_path):
-    # Read the file content
-    with open(template_file_path, "r") as file:
-        content = file.read()
+# Write the content to th `.env_var` file
+content = file_content.replace("current_working_dir", original_working_directory)
+with open(template_file_path, "w") as file:
+    file.write(content)
 
-    # Insert the original working directory into the file
-    content = content.replace("current_working_dir", original_working_directory)
-
-    # Write the modified content back to the file
-    with open(template_file_path, "w") as file:
-        file.write(content)
-
-    print(f"Inserted the original working directory into {template_file_path}")
-else:
-    print(f"Error: File {template_file_path} does not exist.")
+print(f"Created the file {template_file_path}")
