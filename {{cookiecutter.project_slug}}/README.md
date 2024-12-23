@@ -14,7 +14,6 @@
   - [Creating a minified bundle of JS and CSS files](#creating-a-minified-bundle-of-js-and-css-files)
     - [Requirements](#requirements)
 
-
 ## Installation
 
 ### Local installation and development
@@ -27,7 +26,7 @@ git clone git@gitlab.com:marcelhekking/{{cookiecutter.project_slug}}.git
 
 #### Running the container in production mode locally
 
-With Docker, you can start a container for development. Make sure Docker and Docker Compose are installed (<https://docs.docker.com/compose/install/>).
+With Docker, you can start a container in production mode.
 
 ##### Changing the group of public static and media folders
 
@@ -40,7 +39,7 @@ The web Docker performs actions under GI 1024 (e.g., running `collectstatic`). I
 mkdir -p public/staticfiles && mkdir -p public/mediafiles
 ```
 
-and execute the following make command (<https://www.gnu.org/software/make/>):
+and execute the following `make` command (<https://www.gnu.org/software/make/>):
 
 ```bash
 make 1024
@@ -48,16 +47,22 @@ make 1024
 
 ##### Starting the containers
 
-Go to the root of the project (`{{cookiecutter.project_slug}}`) and build the dev container with:
+Go to the root of the project (`{{cookiecutter.project_slug}}`) and first (only to be done once) build the dev container with:
 
 ```bash
-docker compose -f docker-compose.yml build
+sudo docker build -t {{cookiecutter.project_slug}}-web:latest -f Dockerfile .
 ```
 
 Then start the container with:
 
 ```bash
-docker compose -f docker-compose.yml up
+make docker
+```
+
+and shut id down with:
+
+```bash
+make down
 ```
 
 #### Running the Django development server locally
@@ -65,7 +70,7 @@ docker compose -f docker-compose.yml up
 Install the frontend:
 
 ```bash
-uv install
+yarn install
 ```
 
 Create a Python virtual environmnet will all dependencies specified in the `pyproject.toml` installed:
