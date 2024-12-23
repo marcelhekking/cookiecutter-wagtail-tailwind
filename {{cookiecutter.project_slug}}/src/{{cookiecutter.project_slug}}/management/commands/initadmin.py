@@ -9,7 +9,7 @@ class Command(BaseCommand):
             for user in settings.ADMINS:
                 username = user[0].replace(" ", "")
                 email = user[1]
-                password = "AlleenLokaalGeldig"
+                password = "OnlyValidLocally"
                 print("Creating account for %s (%s)" % (username, email))
                 admin = User.objects.create_superuser(
                     email=email, username=username, password=password
