@@ -2,7 +2,7 @@
 
 ## Content
 
-- [{{cookiecutter.project\_name}}](#cookiecutterproject_name)
+- [{{cookiecutter.project_name}}]
   - [Content](#content)
   - [Installation](#installation)
     - [Local installation and development](#local-installation-and-development)
