@@ -2,9 +2,9 @@
   "project_name": "Your project name",
   "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
   "description": "A Django Wagtail project hosted on DigitalOcean, with CI/CD pipelines and Docker",
-  "author_first_name": "Your first name",
-  "author_last_name": "Your last name",
-  "author_email": "Your email address",
+  "author_first_name": "John",
+  "author_last_name": "Doe",
+  "author_email": "admin@damin.com",
   "_copy_without_render": ["src/static", "src/templates", ".github/workflows/ci-cd.yaml"]
 
 }
