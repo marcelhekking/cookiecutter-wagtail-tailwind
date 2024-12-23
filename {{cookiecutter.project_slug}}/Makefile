@@ -13,8 +13,8 @@ clean:
 rebuild:
 	dropdb --if-exists $(DATABASE_NAME)
 	createdb $(DATABASE_NAME)
-	./manage.py migrate
-	./manage.py initadmin
+	uv run manage.py migrate
+	uv run manage.py initadmin
 
 install:
 	uv sync
