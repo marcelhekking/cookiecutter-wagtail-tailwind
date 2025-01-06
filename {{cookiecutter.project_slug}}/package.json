@@ -6,15 +6,12 @@
   "author": "{{cookiecutter.author_first_name}} {{cookiecutter.author_last_name}}",
   "license": "MIT",
   "dependencies": {
-    "jquery": "^3.5.1",
-    "jquery-validation": "^1.19.2",
-    "jquery.easing": "^1.4.1"
+    "@tailwindcss/typography": "^0.5.15",
+    "flowbite-typography": "^1.0.5",
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^5.0.0",
     "autoprefixer": "^10.4.17",
-    "browserify": "^16.5.1",
-    "browserify-css": "^0.15.0",
     "cssnano": "^6.0.3",
     "eslint": "^7.7.0",
     "eslint-plugin-html": "^6.0.3",
@@ -22,11 +19,8 @@
     "postcss": "^8.4.33",
     "postcss-cli": "^11.0.0",
     "tailwindcss": "^3.4.1",
-    "uglify-js": "^3.10.0",
-    "watchify": "^3.11.1"
   },
   "scripts": {
-    "watchify": "watchify -t browserify-css src/static/js/main.js -o 'uglifyjs -cm > src/static/js/dist/bundle.min.js' -v",
     "cssbuild": "postcss ./src/static/css/tailwind.css -o ./src/static/css/main.css",
     "csswatch": "postcss ./src/static/css/tailwind.css -o ./src/static/css/main.css --watch"
   }
