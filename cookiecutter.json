@@ -8,6 +8,6 @@
   "author_email": "admin@damin.com",
   "pulumi_environment": "account/organization/project",
   "glitchtip_dsn": "https://<account>@app.glitchtip.com/<project_id>",
-  "_copy_without_render": ["src/static", "src/templates", ".github/workflows/ci-cd.yaml"]
+  "_copy_without_render": ["src/static", "src/templates"]
 
 }
