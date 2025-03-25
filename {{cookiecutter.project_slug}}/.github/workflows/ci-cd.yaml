@@ -4,7 +4,6 @@ on: [push]
 
 env:
   WEB_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/web
-
 jobs:
   django-lint:
     runs-on: ubuntu-latest
@@ -21,45 +20,41 @@ jobs:
     steps:
       - name: Checkout master
         uses: actions/checkout@v4
-      - name: Add environment variables to .env_var
-        run: |
-          echo DEBUG=0 >> .env_var
-          echo SQL_ENGINE=django.db.backends.postgresql >> .env_var
-          echo DATABASE=postgres >> .env_var
-          echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env_var
-          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env_var
-          echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> .env_var
-          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env_var
-          echo SQL_DATABASE=${{ secrets.SQL_DATABASE }} >> .env_var
-          echo SQL_USER=${{ secrets.SQL_USER }} >> .env_var
-          echo SQL_PASSWORD=${{ secrets.SQL_PASSWORD }} >> .env_var
-          echo SQL_HOST=${{ secrets.SQL_HOST }} >> .env_var
-          echo SQL_PORT=${{ secrets.SQL_PORT }} >> .env_var
-          echo STATICFILES_HOST=${{ vars.STATICFILES_HOST }} >> .env_var
-          echo MEDIAFILES_HOST=${{ vars.MEDIAFILES_HOST }} >> .env_var
-          echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}} )" >> $GITHUB_ENV
-          echo TEST=test >> .env_var
-      - name: Set environment variables
-        run: |
-          echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}} )" >> $GITHUB_ENV
-          echo MEDIAFILES_HOST=${{ vars.MEDIAFILES_HOST }} >> $GITHUB_ENV
-          echo STATICFILES_HOST=${{ vars.STATICFILES_HOST }} >> $GITHUB_ENV
-      - name: Log in to GitHub Packages
-        run: echo ${PERSONAL_ACCESS_TOKEN} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
+
+      - name: Set up Pulumi ESC
+        uses: pulumi/esc-action@v1
+        with:
+          environment: {{cookiecutter.pulumi_environment}}
         env:
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          PULUMI_ACCESS_TOKEN: ${{ '{{' }} secrets.PULUMI_ACCESS_TOKEN {{ '}}' }}
+
+      - name: Add Pulumi environment variables to .env_var
+        run: |
+          esc env get {{cookiecutter.pulumi_environment}} --value dotenv >> .env_var --show-secrets
+
+      - name: Set remaining environment variables
+        run: |
+          echo TEST=test >> .env_var
+          echo "WEB_IMAGE=$(echo ${{ '{{' }}env.WEB_IMAGE{{ '}}' }} )" >> $GITHUB_ENV
+
+      - name: Log in to GitHub Packages
+        run: echo $PERSONAL_ACCESS_TOKEN | docker login ghcr.io -u $NAMESPACE --password-stdin
+
       - name: Pull images
         run: |
-          docker pull ${{ env.WEB_IMAGE }} || true
+          docker pull ${{ '{{' }}env.WEB_IMAGE{{ '}}' }} || true
+
       - name: Build images
         run: |
-          docker compose -f docker-compose.yml build
+          docker build -t ${{ '{{' }}env.WEB_IMAGE{{ '}}' }}:latest -f Dockerfile .
+
       - name: Test web image
         run: |
           docker compose -f docker-compose.yml run --rm web sh -c "python -m pytest ../tests/"
+
       - name: Push images
         run: |
-          docker push ${{ env.WEB_IMAGE }}
+          docker push ${{ '{{' }}env.WEB_IMAGE{{ '}}' }}:latest
 
   deploy:
     name: Deploy to DigitalOcean
@@ -68,30 +63,23 @@ jobs:
     steps:
       - name: Checkout master
         uses: actions/checkout@v4
-      - name: Add environment variables to .env_var
+
+      - name: Set up Pulumi ESC
+        uses: pulumi/esc-action@v1
+        with:
+          environment: {{cookiecutter.pulumi_environment}}
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+
+      - name: Add Pulumi environment variables to .env_var
         run: |
-          echo DEBUG=0 >> .env_var
-          echo SQL_ENGINE=django.db.backends.postgresql >> .env_var
-          echo DATABASE=postgres >> .env_var
-          echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env_var
-          echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env_var
-          echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> .env_var
-          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env_var
-          echo SQL_DATABASE=${{ secrets.SQL_DATABASE }} >> .env_var
-          echo SQL_USER=${{ secrets.SQL_USER }} >> .env_var
-          echo SQL_PASSWORD=${{ secrets.SQL_PASSWORD }} >> .env_var
-          echo SQL_HOST=${{ secrets.SQL_HOST }} >> .env_var
-          echo SQL_PORT=${{ secrets.SQL_PORT }} >> .env_var
-          echo STATICFILES_HOST=${{ vars.STATICFILES_HOST }} >> .env_var
-          echo MEDIAFILES_HOST=${{ vars.MEDIAFILES_HOST }} >> .env_var
-          echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}} )"  >> .env_var
-          echo PERSONAL_ACCESS_TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} >> .env_var
-          echo NAMESPACE=${{ secrets.NAMESPACE }} >> .env_var
-      - name: Set environment variables
+          esc env get {{cookiecutter.pulumi_environment}} --value dotenv >> .env_var --show-secrets
+
+      - name: Set remaining environment variables
         run: |
-          echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}} )" >> $GITHUB_ENV
-          echo MEDIAFILES_HOST=${{ vars.MEDIAFILES_HOST }} >> $GITHUB_ENV
-          echo STATICFILES_HOST=${{ vars.STATICFILES_HOST }} >> $GITHUB_ENV
+          echo "WEB_IMAGE=$(echo ${{ '{{' }}env.WEB_IMAGE{{ '}}' }} )"  >> .env_var
+          echo "WEB_IMAGE=$(echo ${{ '{{' }}env.WEB_IMAGE{{ '}}' }} )" >> $GITHUB_ENV
+
       - name: Add the private SSH key to the ssh-agent
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -99,16 +87,17 @@ jobs:
           mkdir -p ~/.ssh
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-add - <<< "${{ secrets.PRIVATE_KEY }}"
+          ssh-add - <<< "${{ '{{' }} secrets.PRIVATE_KEY_DROPLET {{ '}}' }}"
+
       - name: Build and deploy images on DigitalOcean
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          scp  -o StrictHostKeyChecking=no -r ./.env_var ./docker-compose.yml root@${{ vars.DIGITAL_OCEAN_IP_ADDRESS }}:/app
-          ssh -o StrictHostKeyChecking=no root@${{ vars.DIGITAL_OCEAN_IP_ADDRESS }} << 'ENDSSH'
+          scp  -o StrictHostKeyChecking=no -r ./.env_var ./docker-compose.yml root@$DOMAIN_NAME:/app
+          ssh -o StrictHostKeyChecking=no root@$DOMAIN_NAME << 'ENDSSH'
             cd /app
             export $(grep -v '^#' .env_var | xargs)
-            docker login ghcr.io -u $NAMESPACE -p $PERSONAL_ACCESS_TOKEN
+            echo $PERSONAL_ACCESS_TOKEN | docker login ghcr.io -u $NAMESPACE --password-stdin
             docker pull $WEB_IMAGE
             docker compose -f docker-compose.yml up -d
           ENDSSH
