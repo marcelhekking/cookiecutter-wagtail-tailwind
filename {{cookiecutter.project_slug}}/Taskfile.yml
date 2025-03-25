@@ -1,0 +1,39 @@
+version: "3"
+
+tasks:
+  stop:
+    cmds:
+      - |
+        if [ -n "$(docker ps -a -q)" ]; then
+          docker stop $(docker ps -a -q)
+        fi
+    desc: "Stop all running Docker containers"
+
+  remove:
+    cmds:
+      - |
+        if [ -n "$(docker ps -a -q)" ]; then
+          docker rm $(docker ps -a -q)
+        fi
+    desc: "Remove all stopped Docker containers"
+
+  clean:
+    cmds:
+      - task: stop
+      - task: remove
+    desc: "Stop and remove all Docker containers"
+
+  export-vars:
+    cmds:
+      - fish -c "envsource .env_var"
+    desc: "Set env variables in .env_var file"
+
+  docker-up:
+    cmds:
+      - fish -c 'envsource .env_var; and docker compose -f docker-compose.yml up -d'
+    desc: "Start app with Docker Compose"
+
+  docker-down:
+    cmds:
+      - fish -c 'envsource .env_var; and docker compose -f docker-compose.yml down'
+    desc: "Bring down app with Docker Compose"
