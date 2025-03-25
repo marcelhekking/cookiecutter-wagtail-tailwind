@@ -35,17 +35,13 @@ watch:
 	yarn watchify
 
 build:
-	docker compose -f docker-compose.yml build
+	sudo docker build -t {{cookiecutter.project_slug}}-web:latest -f Dockerfile .
 
 up:
-	docker compose -f docker-compose.yml up
-
-docker:
-	docker compose -f docker-compose.yml build
-	docker compose -f docker-compose.yml up
+	fish -c 'envsource .env_var; and docker compose -f docker-compose.yml up -d'
 
 down:
-	docker compose -f docker-compose.yml down
+	fish -c 'envsource .env_var; and docker compose -f docker-compose.yml down'
 
 sh:
 	docker exec -it {{cookiecutter.project_slug}}-web-1 sh
