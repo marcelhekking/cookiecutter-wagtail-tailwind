@@ -13,6 +13,8 @@ POSTGRES_PASSWORD=a_secret_password
 WEB_IMAGE={{cookiecutter.project_slug}}-web:latest
 MEDIAFILES_HOST=current_working_dir/public/mediafiles/
 STATICFILES_HOST=current_working_dir/public/staticfiles/
+
+DROPLET_IP="your_droplet_ip"
 """
 
 # Define the path to the file where the original working directory is stored

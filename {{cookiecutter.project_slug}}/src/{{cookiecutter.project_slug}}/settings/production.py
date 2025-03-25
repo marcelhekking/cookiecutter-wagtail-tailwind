@@ -2,8 +2,11 @@ import os  # noqa
 
 from .base import *  # noqa
 import sentry_sdk
+import environ
 
 from sentry_sdk.integrations.django import DjangoIntegration
+
+env = environ.Env()
 
 SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
@@ -27,7 +30,8 @@ ALLOWED_HOSTS = [
     "{{cookiecutter.project_slug}}",
     "{{cookiecutter.project_slug}}.nl",
     "www.{{cookiecutter.project_slug}}.nl",
-    "64.225.64.24",
+    "{{cookiecutter.project_slug}}.local",
+    env("DROPLET_IP", default=""),
 ]
 
 STATIC_ROOT = "../public/staticfiles/"
@@ -49,7 +53,7 @@ CSRF_TRUSTED_ORIGINS = ["https://{{cookiecutter.project_slug}}.nl"]
 
 # SENTRY
 sentry_sdk.init(
-    dsn="https://d0b39fc268e24d669c5e3b41e750a94a@app.glitchtip.com/7861",
+    dsn="{{cookiecutter.glitchtip_dsn}}",
     integrations=[DjangoIntegration()],
     auto_session_tracking=False,
     traces_sample_rate=0,
