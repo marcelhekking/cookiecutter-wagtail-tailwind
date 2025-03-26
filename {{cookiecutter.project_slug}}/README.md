@@ -56,7 +56,7 @@ sudo docker build -t {{cookiecutter.project_slug}}-web:latest -f Dockerfile .
 Then start the container with:
 
 ```bash
-make docker
+make up
 ```
 
 and shut id down with:
@@ -73,7 +73,7 @@ Install the frontend:
 yarn install
 ```
 
-Create a Python virtual environmnet will all dependencies specified in the `pyproject.toml` installed:
+install all dependencies specified in the `pyproject.toml`:
 
 ```bash
 uv sync
