@@ -16,6 +16,7 @@ dependencies = [
     "factory-boy==3.3.0",
     "wagtail-factories==4.1.0",
     "python-environ>=0.4.54",
+    "django-browser-reload>=1.17.0",
 ]
 requires-python = ">=3.11"
 readme = "README.md"
@@ -24,10 +25,9 @@ license = { text = "MIT" }
 [tool.uv]
 dev-dependencies = [
     "debugpy>=1.8.9",
-    "django-browser-reload>=1.17.0",
     "django-debug-toolbar>=4.4.6",
+    "ruff>=0.9.10",
 ]
-
 
 [tool.sync-pre-commit-lock]
 automaticall-install-hooks = true
