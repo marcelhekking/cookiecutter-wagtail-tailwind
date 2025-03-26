@@ -33,21 +33,21 @@ With Docker, you can start a container in production mode.
 The web Docker performs actions under GI 1024 (e.g., running `collectstatic`). In the Docker files, a physical volume on the host is linked with folders inside Docker. To avoid permission errors:
 
 - Create a public folder at the project level (next to `src`)
-- Create `staticfiles` and `mediafiles` folders and run the following for both folders:
+- Create `staticfiles` and `mediafiles` folders and run the following `make` command (<https://www.gnu.org/software/make/>):
 
 ```bash
-mkdir -p public/staticfiles && mkdir -p public/mediafiles
+make public
 ```
 
-and execute the following `make` command (<https://www.gnu.org/software/make/>):
+then grant access for docker:
 
 ```bash
 make 1024
 ```
 
-##### Starting the containers
+##### Starting the containers in production mode
 
-Go to the root of the project (`{{cookiecutter.project_slug}}`) and first (only to be done once) build the dev container with:
+Go to the root of the project (`{{cookiecutter.project_slug}}`) and first (only to be done once) build the container with:
 
 ```bash
 sudo docker build -t {{cookiecutter.project_slug}}-web:latest -f Dockerfile .
@@ -59,7 +59,7 @@ Then start the container with:
 make up
 ```
 
-and shut id down with:
+and shut it down with:
 
 ```bash
 make down
@@ -109,31 +109,4 @@ To test, you can check existing files with pre-commit:
 
 ```bash
 pre-commit run --all-files
-```
-
-## Creating a minified bundle of JS and CSS files
-
-For modifying and effectively creating CSS and JS files, `watchify` is used. Changes to CSS and JS are observed and converted into a minified bundle. This minified bundle is deployed to production.
-
-### Requirements
-
-The following Node.js applications must be installed:
-
-- browserify
-- watchify
-- uglify-js
-- browserify-css
-
-All dependencies can be installed with the `yarn install` command in the root of the project:
-
-```bash
-cd ~/../{{cookiecutter.project_slug}}$
-yarn install
-```
-
-Start watchify to create a minified bundle 'on-the-fly':
-
-```bash
-cd ~/../{{cookiecutter.project_slug}}$
-yarn run watchify
 ```
