@@ -49,12 +49,3 @@ LOGGING = {  # noqa
 }
 
 CSRF_TRUSTED_ORIGINS = ["https://{{cookiecutter.project_slug}}.nl"]
-
-
-# SENTRY
-sentry_sdk.init(
-    dsn="{{cookiecutter.glitchtip_dsn}}",
-    integrations=[DjangoIntegration()],
-    auto_session_tracking=False,
-    traces_sample_rate=0,
-)
