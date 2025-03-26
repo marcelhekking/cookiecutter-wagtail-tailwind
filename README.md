@@ -14,15 +14,15 @@ cookiecutter https://github.com/marcelhekking/cookiecutter-wagtail-tailwind
 
 You'll be asked some questions about the project. After installation read the README.md file of the just created project on how to further set things up to run the site locally or via Docker.
 
-## Making CI/CD via Github actions possible for this site
+## Making CI/CD via Github actions possible for a created site
 
-- Create a uv lock file first by running
+- After the cookiecutter created the site, go into to the project's folder and make a uv lock file first by running
 
     ```bash
     uv sync
     ```
 
-- create a Github repo of the created site and make it available on your Github account.
+- make a Git repo out of this site and make it available on your Github account.
 
 - Add two secret variables to the repo:
   - PRIVATE_KEY_DROPLET (the private SSH key of an SSH pair as created on the droplet with `ansible-playbook ansible/ssh.yml`) (see [this](https://github.com/marcelhekking/cookiecutter-infra-do) cookiecutter project)
