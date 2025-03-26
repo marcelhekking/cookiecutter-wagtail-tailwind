@@ -1,13 +1,11 @@
 {
   "project_name": "Your project name",
   "description": "A Django Wagtail project hosted on DigitalOcean, with CI/CD pipelines and Docker",
-  "domain_name": "example.com",
-  "project_slug": "{{ cookiecutter.domain_name.lower().split('.')[0] }}",
+  "project_slug": "onewordnointerpunction",
   "author_first_name": "John",
   "author_last_name": "Doe",
   "author_email": "admin@damin.com",
   "pulumi_environment": "account/organization/project",
-  "glitchtip_dsn": "https://<account>@app.glitchtip.com/<project_id>",
   "_copy_without_render": ["src/static", "src/templates"]
 
 }
