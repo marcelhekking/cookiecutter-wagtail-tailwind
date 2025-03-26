@@ -5,7 +5,7 @@ version = "0.1.0"
 authors = [{ name = "{{cookiecutter.author_first_name}} {{cookiecutter.author_last_name}}", email = "{{cookiecutter.author_email.lower()}}" }]
 dependencies = [
     "wagtail==5.2.3",
-    "psycopg2-binary==2.9.7",
+    "psycopg==3.2.6",
     "gunicorn==21.2.0",
     "ctrl-z==1.5.1",
     "wagtail-font-awesome-svg==1.0.1",
