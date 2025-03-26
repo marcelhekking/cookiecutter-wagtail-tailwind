@@ -49,6 +49,10 @@ sh:
 shell:
 	docker exec -it {{cookiecutter.project_slug}}-web-1 python manage.py shell
 
+public:
+	mkdir -p public/mediafiles
+	mkdir -p public/staticfiles
+
 1024:
 	# 1024 is the group id of the docker container
 	sudo chown -R :1024 public/mediafiles
