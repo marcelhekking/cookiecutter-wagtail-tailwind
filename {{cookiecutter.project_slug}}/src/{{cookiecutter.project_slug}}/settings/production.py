@@ -1,10 +1,7 @@
 import os  # noqa
 
 from .base import *  # noqa
-import sentry_sdk
 import environ
-
-from sentry_sdk.integrations.django import DjangoIntegration
 
 env = environ.Env()
 
@@ -14,7 +11,7 @@ DEBUG = False
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "ENGINE": "django.db.backends.postgresql_psycopg",
         "NAME": os.getenv("SQL_DATABASE", "database"),
         "USER": os.getenv("SQL_USER", "user"),
         "PASSWORD": os.getenv("SQL_PASSWORD", "password"),
@@ -27,10 +24,10 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "0.0.0.0",
     "localhost",
-    "{{cookiecutter.project_slug}}",
-    "{{cookiecutter.project_slug}}.nl",
-    "www.{{cookiecutter.project_slug}}.nl",
-    "{{cookiecutter.project_slug}}.local",
+    "{{cookiecutter.domain}}",
+    "{{cookiecutter.domain_name}}",
+    "www.{{cookiecutter.domain_name}}",
+    "{{cookiecutter.domain}}.local",
     env("DROPLET_IP", default=""),
 ]
 
@@ -48,4 +45,4 @@ LOGGING = {  # noqa
     },
 }
 
-CSRF_TRUSTED_ORIGINS = ["https://{{cookiecutter.project_slug}}.nl"]
+CSRF_TRUSTED_ORIGINS = ["https://{{cookiecutter.domain_name}}"]
