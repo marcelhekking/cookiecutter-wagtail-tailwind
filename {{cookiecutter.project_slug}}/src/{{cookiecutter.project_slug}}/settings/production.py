@@ -11,7 +11,7 @@ DEBUG = False
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg",
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": os.getenv("SQL_DATABASE", "database"),
         "USER": os.getenv("SQL_USER", "user"),
         "PASSWORD": os.getenv("SQL_PASSWORD", "password"),
