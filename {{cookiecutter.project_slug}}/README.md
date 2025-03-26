@@ -1,18 +1,8 @@
 # {{cookiecutter.project_name}}
 
-## Content
+## Introduction
 
-- [{{cookiecutter.project_name}}]
-  - [Content](#content)
-  - [Installation](#installation)
-    - [Local installation and development](#local-installation-and-development)
-      - [Running the container in production mode locally](#running-the-container-in-production-mode-locally)
-        - [Changing the group of public static and media folders](#changing-the-group-of-public-static-and-media-folders)
-        - [Starting the containers](#starting-the-containers)
-      - [Running the Django development server locally](#running-the-django-development-server-locally)
-    - [Installing Pre-commit](#installing-pre-commit)
-  - [Creating a minified bundle of JS and CSS files](#creating-a-minified-bundle-of-js-and-css-files)
-    - [Requirements](#requirements)
+This repo builds a website based on Django and Wagtail. The production version runs in two Docker containers. One container provides a Gunicorn webservice serving Django and the other container provides a Postgress database service. Nginx on the host machine can then be used as a proxy-server. There is another cookiecutter template available that sets up Digital Ocean droplets to run these containers (<https://github.com/marcelhekking/cookiecutter-infra-do/>)
 
 ## Installation
 
