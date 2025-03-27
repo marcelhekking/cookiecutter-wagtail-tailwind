@@ -50,17 +50,17 @@ shell:
 	docker exec -it {{cookiecutter.project_slug}}-web-1 python manage.py shell
 
 public:
-	mkdir -p public/mediafiles
-	mkdir -p public/staticfiles
+	mkdir -p ~/www/omni/public/mediafiles
+	mkdir -p ~/www/omni/public/staticfiles
 
 1024:
 	# 1024 is the group id of the docker container
-	sudo chown -R :1024 public/mediafiles
-	sudo chmod -R 775 public/mediafiles
-	sudo chmod g+s public/mediafiles
-	sudo chown -R :1024 public/staticfiles
-	sudo chmod -R 775 public/staticfiles
-	sudo chmod g+s public/staticfiles
+	sudo chown -R :1024 ~/www/omni/public/mediafiles
+	sudo chmod -R 777 ~/www/omni/public/mediafiles
+	sudo chmod g+s ~/www/omni/public/mediafiles
+	sudo chown -R :1024 ~/www/omni/public/staticfiles
+	sudo chmod -R 777 ~/www/omni/public/staticfiles
+	sudo chmod g+s ~/www/omni/public/staticfiles
 
 #
 # Format / Lint targets

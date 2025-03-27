@@ -21,6 +21,7 @@ DATABASES = {
 }
 
 ALLOWED_HOSTS = [
+    "omni.local",
     "127.0.0.1",
     "0.0.0.0",
     "localhost",
